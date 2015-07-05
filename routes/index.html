@@ -40,7 +40,6 @@ path {
 
 
     $(document).ready(function(){
-        console.log("hi");
         function poll() {
             $.ajax({
                 url: "http://localhost:3000/pinger",
@@ -48,6 +47,8 @@ path {
                 dataType: "json",
                 success: function (response) {
                     render(response);
+                    console.log("updated data");
+
                 }
             });
         }
@@ -72,13 +73,10 @@ path {
         var yAxis = d3.svg.axis().scale(y)
                 .orient("left").ticks(5);
 
-
-
-
         // Define the line
         var valueline = d3.svg.line()
                 .x(function(d) { return x(d.index); })
-                .y(function(d) { return y(d.close); });
+                .y(function(d) { return y(d.time); });
 
         // Adds the svg canvas
         var svg = d3.select("body")
@@ -91,12 +89,12 @@ path {
 
         data.forEach(function(d) {
             d.index = +d.index;
-            d.close = +d.close;
+            d.time = +d.time;
         });
 
         // Scale the range of the data
         x.domain([0, d3.max(data, function(d) { return d.index; })]);
-        y.domain([0, d3.max(data, function(d) { return d.close; })]);
+        y.domain([0, d3.max(data, function(d) { return d.time; })]);
 
         // Add the valueline path.
         svg.append("path")

@@ -9,7 +9,6 @@ router.get('/pinger', function(req, res, next) {
   var data1 = [];
   endpoints.forEach(function(endpoint,i){
     var start = new Date().getTime();
-    console.log(start);
     var options={};
     options.url = endpoint.url;
     options.method=endpoint.method;
@@ -19,16 +18,13 @@ router.get('/pinger', function(req, res, next) {
       options.search=endpoint.search;
     if(endpoint.body)
       options.body=endpoint.body;
-    console.log(options);
       request(options,function(err,data){
         data1.push({
           "index":i,
-          "close":(new Date().getTime() - start)
+          "time":(new Date().getTime() - start)
         });
-         console.log(new Date().getTime() - start);
       });
   });
-  console.log(data1);
   res.send(data1);
 });
 
